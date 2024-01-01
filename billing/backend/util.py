@@ -9,7 +9,7 @@ from rest_framework.response import Response
 from phonenumber_field.phonenumber import PhoneNumber
 
 from base.backend.service import PaymentTransactionService
-from sheltuz import  settings
+from mpesaIntergration import settings
 from .serializers import TransactionSerializer
 
 logging = logging.getLogger("default")
