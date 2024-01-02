@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -46,11 +46,11 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'billing',
     'base',
     'audit',
     'api',
-    'customer'
+    'customer',
+    'billing',
 ]
 
 MIDDLEWARE = [
@@ -113,6 +113,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+MPESA_CONFIG = {
+    'CONSUMER_KEY':'KhGrJT73Hp3wwYLfnPFmmLwAuPAJkeY2',
+    'CONSUMER_SECRET': 'aBNGOlmoZyA21xq4',
+    'CERTIFICATE_FILE': None,
+    'HOST_NAME': 'https://stage-api.marikwamari.co.ke/',
+    'PASS_KEY': 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
+    'SAFARICOM_API': 'https://sandbox.safaricom.co.ke',
+    'AUTH_URL': '/oauth/v1/generate?grant_type=client_credentials',
+    'SHORT_CODE': '174379',
+    'TILL_NUMBER': None,
+    'TRANSACTION_TYPE': 'CustomerBuyGoodsOnline',
+}
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
