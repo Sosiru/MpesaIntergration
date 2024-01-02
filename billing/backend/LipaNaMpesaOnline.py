@@ -6,7 +6,7 @@ from base64 import b64encode
 
 from base.backend.service import PaymentTransactionService, StateService
 from billing.models import PaymentTransaction
-from billing.backend.settings import api_settings
+from billing.backend.api_settings import api_settings
 
 # Read variables from settings file
 
@@ -43,63 +43,67 @@ def get_token():
 
 
 def sendSTK(phone_number, amount, orderId=0, transaction_id=None, shortcode=None, account_number=None):
-    code = shortcode or SHORT_CODE
-    party_b = TILL_NUMBER or code
-    access_token = get_token()
-    if access_token is False:
-        raise Exception("Invalid Consumer key or secret or both")
+    try:
+        code = shortcode or SHORT_CODE
+        party_b = TILL_NUMBER or code
+        access_token = get_token()
+        if access_token is False:
+            raise Exception("Invalid Consumer key or secret or both")
 
-    time_now = datetime.datetime.now().strftime("%Y%m%d%H%I%S")
+        time_now = datetime.datetime.now().strftime("%Y%m%d%H%I%S")
 
-    s = code + PASS_KEY + time_now
-    encoded = b64encode(s.encode('utf-8')).decode('utf-8')
+        s = code + PASS_KEY + time_now
+        encoded = b64encode(s.encode('utf-8')).decode('utf-8')
 
-    api_url = "{}/billing/stkpush/v1/processrequest".format(SAFARICOM_API)
-    headers = {
-        "Authorization": "Bearer %s" % access_token,
-        "Content-Type": "application/json",
-    }
+        api_url = "{}/billing/stkpush/v1/processrequest".format(SAFARICOM_API)
+        headers = {
+            "Authorization": "Bearer %s" % access_token,
+            "Content-Type": "application/json",
+        }
 
-    transaction_type = TRANSACTION_TYPE or "CustomerBuyGoodsOnline"
-    # If account number is set, change transaction type to paybill
-    if account_number:
-        transaction_type = "CustomerPayBillOnline"
-    elif transaction_type == "CustomerPayBillOnline" and account_number == None:
-        account_number = phone_number
+        transaction_type = TRANSACTION_TYPE or "CustomerBuyGoodsOnline"
+        # If account number is set, change transaction type to paybill
+        if account_number:
+            transaction_type = "CustomerPayBillOnline"
+        elif transaction_type == "CustomerPayBillOnline" and account_number == None:
+            account_number = phone_number
 
-    request = {
-        "BusinessShortCode": int(code),
-        "Password": encoded,
-        "Timestamp": time_now,
-        "TransactionType": transaction_type,
-        "Amount": str(int(amount)),
-        "PartyA": phone_number,
-        "PartyB": party_b,
-        "PhoneNumber": phone_number,
-        "CallBackURL": "{}/billing/confirm/".format(HOST_NAME),
-        "AccountReference": account_number or code,
-        "TransactionDesc": "{}".format(phone_number)
-    }
+        request = {
+            "BusinessShortCode": int(code),
+            "Password": encoded,
+            "Timestamp": time_now,
+            "TransactionType": transaction_type,
+            "Amount": str(int(amount)),
+            "PartyA": phone_number,
+            "PartyB": party_b,
+            "PhoneNumber": phone_number,
+            "CallBackURL": "{}/billing/confirm/".format(HOST_NAME),
+            "AccountReference": account_number or code,
+            "TransactionDesc": "{}".format(phone_number)
+        }
 
-    print(request)
-    response = requests.post(api_url, json=request, headers=headers)
-    json_response = json.loads(response.text)
-    if json_response.get('ResponseCode'):
-        if json_response["ResponseCode"] == "0":
-            checkout_id = json_response["CheckoutRequestID"]
-            if transaction_id:
-                transaction = PaymentTransactionService().filter(id=transaction_id)
-                transaction.checkout_request_id = checkout_id
-                transaction.save()
-                return transaction.id
-            else:
-                transaction = PaymentTransactionService().create(
-                    phone_number=phone_number, checkout_request_id=checkout_id,
-                    amount=amount, order_id=orderId, state=StateService().get(name="Processing"))
-                transaction.save()
-                return transaction.id
-    else:
-        raise Exception("Error sending MPesa stk push", json_response)
+        print(request)
+        response = requests.post(api_url, json=request, headers=headers)
+        json_response = json.loads(response.text)
+        if json_response.get('ResponseCode'):
+            if json_response["ResponseCode"] == "0":
+                checkout_id = json_response["CheckoutRequestID"]
+                if transaction_id:
+                    transaction = PaymentTransactionService().filter(id=transaction_id)
+                    transaction.checkout_request_id = checkout_id
+                    transaction.save()
+                    return transaction.id
+                else:
+                    transaction = PaymentTransactionService().create(
+                        phone_number=phone_number, checkout_request_id=checkout_id,
+                        amount=amount, order_id=orderId, state=StateService().get(name="Processing"))
+                    transaction.save()
+                    return transaction.id
+        else:
+            raise Exception("Error sending MPesa stk push", json_response)
+    except Exception as ex:
+        print("Error during stk", ex)
+        return {"code":"100.000.001"}
 
 
 def check_payment_status(checkout_request_id, shortcode=None):

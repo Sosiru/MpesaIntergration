@@ -27,22 +27,26 @@ class SubmitView(APIView):
     permission_classes = [AllowAny, ]
 
     def post(self, request):
-        data = request.data
-        phone_number = data['phone_number']
-        amount = data['amount']
+        try:
+            data = request.data
+            phone_number = data['phone_number']
+            amount = data['amount']
 
-        entity_id = 0
-        if data.get('entity_id'):
-            entity_id = data.get('entity_id')
+            entity_id = 0
+            if data.get('entity_id'):
+                entity_id = data.get('entity_id')
 
-        paybill_account_number = None
-        if data.get('paybill_account_number'):
-            paybill_account_number = data.get('paybill_account_number')
+            paybill_account_number = None
+            if data.get('paybill_account_number'):
+                paybill_account_number = data.get('paybill_account_number')
 
-        transaction_id = sendSTK(phone_number, amount, entity_id, account_number=paybill_account_number)
-        # b2c()
-        message = {"status": "ok", "transaction_id": transaction_id}
-        return Response(message, status=HTTP_200_OK)
+            transaction_id = sendSTK(phone_number, amount, entity_id, account_number=paybill_account_number)
+            # b2c()
+            message = {"status": "ok", "transaction_id": transaction_id}
+            return Response(message, status=HTTP_200_OK)
+        except Exception as ex:
+            print("Submit view Exception", ex)
+            return {"code":"100.000.001"}
 
 
 class CheckTransactionOnline(APIView):
