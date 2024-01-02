@@ -10,7 +10,6 @@ from base.models import BaseModel, State, Country, GenericBaseModel
 
 
 # 01
-# Create your models here.
 class Customer(BaseModel):
 	name = models.CharField(max_length=50)
 	identifier = models.CharField(max_length=50, unique=True)
@@ -18,7 +17,7 @@ class Customer(BaseModel):
 	email_address = models.CharField(max_length=50, null=True, blank=True)
 	address = models.CharField(max_length=50, null=True, blank=True)
 	postal_code = models.CharField(max_length=50, null=True, blank=True)
-	country = models.ForeignKey(Country, on_delete=models.CASCADE)
+	country = models.ForeignKey(Country, default=Country.default_country(),on_delete=models.CASCADE)
 	state = models.ForeignKey(State, default=State.default_state, on_delete=models.CASCADE)
 
 	def __str__(self):
@@ -44,7 +43,7 @@ class CustomerAccount(BaseModel):
 
 	@receiver(post_save, sender=customer)
 	@disable_for_loaddata
-	def create_corporate_account(sender, instance, created, **kwargs):
+	def create_customer_account(sender, instance, created, **kwargs):
 		"""Sends a signal for default account to be generated when a customer is created"""
 		with trx.atomic():
 			acc = CustomerAccount.objects.select_for_update().order_by('-date_created').first()
@@ -52,7 +51,6 @@ class CustomerAccount(BaseModel):
 
 		if created:
 			CustomerAccount.objects.create(corporate=instance, account_number=accno, state=instance.state)
-
 
 # 03
 class Service(GenericBaseModel):

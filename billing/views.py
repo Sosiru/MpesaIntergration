@@ -16,8 +16,6 @@ from rest_framework.permissions import AllowAny
 
 
 # Create your views here.
-
-
 class PaymentTranactionView(ListCreateAPIView):
     def post(self, request):
         return HttpResponse("OK", status=200)
@@ -30,7 +28,6 @@ class SubmitView(APIView):
         data = request.data
         phone_number = data['phone_number']
         amount = data['amount']
-
         entity_id = 0
         if data.get('entity_id'):
             entity_id = data.get('entity_id')

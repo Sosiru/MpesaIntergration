@@ -7,7 +7,7 @@ import uuid
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
 
-from base.models import BaseModel, State
+from base.models import BaseModel, State, GenericBaseModel
 from customer.models import Customer
 
 
@@ -44,7 +44,6 @@ class ClientCredentials(BaseModel):
         ('PRODUCTION', 'PRODUCTION'),
     ]
     DEFAULT_ENVIRONMENT = "STAGE"
-
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
     consumer_key = models.CharField(max_length=30, null=True, blank=True)
     consumer_secret = models.CharField(max_length=30, null=True, blank=True)
@@ -58,6 +57,7 @@ class ClientCredentials(BaseModel):
     account_number = models.CharField(max_length=30, null=True, blank=True)
     trx_type = models.CharField(max_length=30) # e.g  'CustomerBuyGoodsOnline',
     environment = models.CharField(max_length=15, default=DEFAULT_ENVIRONMENT, blank=False, null=False, choices=ENVIRONMENTS)
+    state = models.ForeignKey(State, default=State.default_state(), on_delete=models.CASCADE)
 
     def __str__(self):
         return "{} {}".format(self.customer, self.environment)

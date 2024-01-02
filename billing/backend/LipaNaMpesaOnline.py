@@ -5,21 +5,19 @@ from requests.auth import HTTPBasicAuth
 from base64 import b64encode
 
 from base.backend.service import PaymentTransactionService, StateService
-from billing.models import PaymentTransaction
-from billing.backend.settings import api_settings
-
+from customer.backend.config import CustomerManagement
+api_settings = CustomerManagement().get_customer_stage_credentials()
 # Read variables from settings file
 
-consumer_key = api_settings.CONSUMER_KEY
-consumer_secret = api_settings.CONSUMER_SECRET
-
-HOST_NAME = api_settings.HOST_NAME
-PASS_KEY = api_settings.PASS_KEY
-SHORT_CODE = api_settings.SHORT_CODE
-TILL_NUMBER = api_settings.TILL_NUMBER
-SAFARICOM_API = api_settings.SAFARICOM_API
-TRANSACTION_TYPE = api_settings.TRANSACTION_TYPE
-AUTH_URL = api_settings.AUTH_URL
+consumer_key = api_settings['CONSUMER_KEY']
+consumer_secret = api_settings['CONSUMER_SECRET']
+HOST_NAME = api_settings['HOST_NAME']
+PASS_KEY = api_settings['PASS_KEY']
+SHORT_CODE = api_settings['SHORT_CODE']
+TILL_NUMBER = api_settings['TILL_NUMBER']
+SAFARICOM_API = api_settings['SAFARICOM_API']
+TRANSACTION_TYPE = api_settings['TRANSACTION_TYPE']
+AUTH_URL = api_settings['AUTH_URL']
 
 
 # Applies for LipaNaMpesaOnline Payment method
