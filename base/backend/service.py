@@ -9,7 +9,10 @@ from base.backend.servicebase import ServiceBase
 from base.models import State, AccountFieldType, Country
 # from core.models import AD, ADBid, Category, Location, PasswordToken
 # from notifications.models import NotificationBase
-from billing.models import PaymentTransaction
+from billing.models import PaymentTransaction, ClientCredentials
+from customer.models import Customer
+
+
 # from settings.models import SiteSetting
 # from users.models import SheltuzUser
 # from orders.models import Order, OrderItem, Cart, Wishlist
@@ -27,6 +30,19 @@ class PaymentTransactionService(ServiceBase):
 	PaymentMethod model CRUD services
 	"""
 	manager = PaymentTransaction.objects
+
+
+class ClientCredentialsService(ServiceBase):
+	"""
+	PaymentMethod model CRUD services
+	"""
+	manager = ClientCredentials.objects
+
+class CustomerService(ServiceBase):
+	"""
+	PaymentMethod model CRUD services
+	"""
+	manager = Customer.objects
 
 
 class AccountFieldTypeService(ServiceBase):
