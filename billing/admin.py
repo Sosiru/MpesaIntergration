@@ -1,27 +1,35 @@
-from django.contrib import admin
+# -*- coding: utf-8 -*-
+# from __future__ import unicode_literals
 
-from billing.models import PaymentTransaction, Wallet
+from django.contrib import admin
+from .models import PaymentTransaction, Wallet, ClientCredentials
 
 
 # Register your models here.
 @admin.register(PaymentTransaction)
-class PaymentsAdmin(admin.ModelAdmin):
-	"""
-	Seller model admin. Defines the fields to display and which ones are searchable
-	"""
+class PaymentTransactionAdmin(admin.ModelAdmin):
+	list_display = ("phone_number", "amount",
+	                "state", "transaction_id", 'date_created', 'date_modified')
+	list_filter = ('phone_number', 'amount', 'date_created', 'date_modified')
+	search_fields = ('name', 'phone_number', 'amount', 'date_created', 'date_modified')
 
-	list_filter = ('phone_number', 'checkout_request_id', 'amount', 'status', 'ip','date_created', 'date_modified')
-	list_display = ('phone_number', 'checkout_request_id', 'amount', 'status', 'ip','date_created', 'date_modified')
-	search_fields = ('phone_number', 'checkout_request_id', 'amount', 'status', 'ip','date_created', 'date_modified')
-	order_by = ( 'phone_number', 'checkout_request_id', 'amount', 'status', 'ip','date_created', 'date_modified')
 
 @admin.register(Wallet)
 class WalletAdmin(admin.ModelAdmin):
 	"""
-	Seller model admin. Defines the fields to display and which ones are searchable
+	State model admin. Defines the fields to display and which ones are searchable
 	"""
+	list_filter = ('available_balance', 'actual_balance', 'date_modified', 'date_created')
+	list_display = ('available_balance', 'actual_balance', 'date_modified', 'date_created')
+	search_fields = ('available_balance', 'actual_balance', 'date_modified', 'date_created')
 
-	list_filter = ('phone_number', 'available_balance', 'actual_balance', 'state', 'date_created', 'date_modified')
-	list_display = ('phone_number', 'available_balance', 'actual_balance', 'state', 'date_created', 'date_modified')
-	search_fields = ('phone_number', 'available_balance', 'actual_balance', 'state', 'date_created', 'date_modified')
-	order_by = ('phone_number', 'available_balance', 'actual_balance', 'state', 'date_created', 'date_modified')
+
+@admin.register(ClientCredentials)
+class ClientCredentialsAdmin(admin.ModelAdmin):
+	"""
+	State model admin. Defines the fields to display and which ones are searchable
+	"""
+	list_filter = ('customer', 'environment', 'shortcode', 'date_modified', 'date_created')
+	list_display = ('customer', 'environment', 'shortcode', 'date_modified', 'date_created')
+	search_fields = ('customer', 'environment', 'shortcode', 'date_modified', 'date_created')
+
