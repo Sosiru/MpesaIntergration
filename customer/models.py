@@ -28,43 +28,6 @@ class Customer(BaseModel):
 		ordering = ['-date_created']
 
 
-# 02
-class CustomerAccount(BaseModel):
-	customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-	account_number = models.CharField(max_length=50, default=1000000000)
-	state = models.ForeignKey(State, default=State.default_state, on_delete=models.CASCADE)
-
-	def __str__(self):
-		return '%s  %s' % (self.customer, self.account_number)
-
-	class Meta:
-		verbose_name_plural = "Customer Account"
-		ordering = ['-date_created']
-
-	@receiver(post_save, sender=customer)
-	@disable_for_loaddata
-	def create_customer_account(sender, instance, created, **kwargs):
-		"""Sends a signal for default account to be generated when a customer is created"""
-		with trx.atomic():
-			acc = CustomerAccount.objects.select_for_update().order_by('-date_created').first()
-			accno = str(int(acc.account_number) + 1) if acc else "100000000"
-
-		if created:
-			CustomerAccount.objects.create(corporate=instance, account_number=accno, state=instance.state)
-
-# 03
-class Service(GenericBaseModel):
-	customer = models.ForeignKey(Customer, null=False, blank=False, on_delete=models.CASCADE)
-	service_id = models.CharField(max_length=100, unique=True)
-	amount = models.DecimalField(decimal_places=2, max_digits=25, null=True, blank=True)
-	state = models.ForeignKey(State, default=State.default_state, on_delete=models.CASCADE)
-
-	def __str__(self):
-		return '%s  %s' % (self.service_id, self.state)
-
-	class Meta:
-		verbose_name_plural = "Service"
-		ordering = ['-date_created']
 
 
 # 04

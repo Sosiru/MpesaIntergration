@@ -9,7 +9,7 @@ from .models import PaymentTransaction, Wallet, ClientCredentials
 @admin.register(PaymentTransaction)
 class PaymentTransactionAdmin(admin.ModelAdmin):
 	list_display = ("phone_number", "amount",
-	                "state", "transaction_id", 'date_created', 'date_modified')
+	                "state", "receipt_number", 'date_created', 'date_modified')
 	list_filter = ('phone_number', 'amount', 'date_created', 'date_modified')
 	search_fields = ('name', 'phone_number', 'amount', 'date_created', 'date_modified')
 

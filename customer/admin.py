@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from customer.models import Customer, CustomerAccount, Service
+from customer.models import Customer
 
 
 # Register your models here.
@@ -13,22 +13,5 @@ class CorporateAdmin(admin.ModelAdmin):
 		'email_address', 'country', 'state', 'date_modified', 'date_created')
 	search_fields = ('name', 'remote_code')
 
-
-@admin.register(CustomerAccount)
-class CustomerAccountAdmin(admin.ModelAdmin):
-	"""CorporateAccount model admin. Defines the fields to display and which ones are searchable"""
-	list_filter = ('date_created', 'customer__country', 'state')
-	list_display = (
-		'customer', 'account_number', 'state',
-		'date_modified', 'date_created')
-	search_fields = ('name', 'account_number', 'corporate__name')
-
-
-@admin.register(Service)
-class ServiceAdmin(admin.ModelAdmin):
-	"""DocumentProcessed model admin. Defines the fields to display and which ones are searchable"""
-	list_filter = ('date_created', 'state')
-	list_display = ('service_id', 'state', 'date_modified', 'date_created')
-	search_fields = ('service_id', 'state__name')
 
 

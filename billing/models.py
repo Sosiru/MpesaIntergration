@@ -14,13 +14,14 @@ from customer.models import Customer
 class PaymentTransaction(BaseModel):
     phone_number = models.CharField(max_length=30)
     amount = models.DecimalField(max_digits=14, decimal_places=2, default=0)
-    transaction_id = models.CharField(max_length=30)
+    receipt_number = models.CharField(max_length=30, null=True, blank=True)
     order_id = models.CharField(max_length=200)
     checkout_request_id = models.CharField(max_length=100)
     date_modified = models.DateTimeField(auto_now=True)
     date_created = models.DateTimeField(auto_now=False, auto_now_add=True)
     content_type = models.ForeignKey(ContentType, null=True, blank=True, on_delete=models.SET_NULL)
     object_id = models.PositiveIntegerField(default=0)
+    response = models.TextField(blank=True, null=True)
     content_object = GenericForeignKey('content_type', 'object_id')
     state = models.ForeignKey(State, default=State.default_state(), on_delete=models.CASCADE)
 
@@ -45,17 +46,17 @@ class ClientCredentials(BaseModel):
     ]
     DEFAULT_ENVIRONMENT = "STAGE"
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    consumer_key = models.CharField(max_length=30, null=True, blank=True)
-    consumer_secret = models.CharField(max_length=30, null=True, blank=True)
-    shortcode = models.CharField(max_length=30, null=True, blank=True)
-    pass_key = models.CharField(max_length=30, null=True, blank=True)
-    auth_url = models.CharField(max_length=30, null=True, blank=True) #  e.g "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
-    safaricom_api = models.CharField(max_length=30, null=True, blank=True) #  e.g  "https://api.safaricom.co.ke/mpesa/stkpushquery/v1/"
+    consumer_key = models.CharField(max_length=100, null=True, blank=True)
+    consumer_secret = models.CharField(max_length=100, null=True, blank=True)
+    shortcode = models.CharField(max_length=100, null=True, blank=True)
+    pass_key = models.CharField(max_length=100, null=True, blank=True)
+    auth_url = models.CharField(max_length=100, null=True, blank=True) #  e.g "https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
+    safaricom_api = models.CharField(max_length=100, null=True, blank=True) #  e.g  "https://api.safaricom.co.ke/mpesa/stkpushquery/v1/"
     certificate_file = models.FileField(upload_to='media/', null=True, blank=True)
-    host_name = models.CharField(max_length=30)
-    till_number = models.CharField(max_length=30, null=True, blank=True)
-    account_number = models.CharField(max_length=30, null=True, blank=True)
-    trx_type = models.CharField(max_length=30) # e.g  'CustomerBuyGoodsOnline',
+    host_name = models.CharField(max_length=100)
+    till_number = models.CharField(max_length=100, null=True, blank=True)
+    account_number = models.CharField(max_length=100, null=True, blank=True)
+    trx_type = models.CharField(max_length=100) # e.g  'CustomerBuyGoodsOnline',
     environment = models.CharField(max_length=15, default=DEFAULT_ENVIRONMENT, blank=False, null=False, choices=ENVIRONMENTS)
     state = models.ForeignKey(State, default=State.default_state(), on_delete=models.CASCADE)
 

@@ -25,18 +25,7 @@ SECRET_KEY = 'django-insecure-(0c5ytxpvrhfruf&6!d2^t=a5v&gf-!_6rygqy818)l-^f8t%0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
-
-consumer_key = "I6EAACNFbc34OnCjy7gFt5xOd4bfYVs1"
-consumer_secret = "PFLu5cx2GIcs8Wc2"
-shortcode="174379"
-pass_key="bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919 "
-access_token_url="https://api.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
-mpesa_query_check_url="https://api.safaricom.co.ke/mpesa/stkpushquery/v1/"
-querycheckout_url="https://api.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-# environ.Env.
-
+ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS = [
@@ -114,10 +103,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # MPESA_CONFIG = {
-#     'CONSUMER_KEY':'KhGrJT73Hp3wwYLfnPFmmLwAuPAJkeY2',
-#     'CONSUMER_SECRET': 'aBNGOlmoZyA21xq4',
-#     'CERTIFICATE_FILE': None,
-#     'HOST_NAME': 'https://stage-api.marikwamari.co.ke/',
+#     'CONSUMER_KEY': '307yjIpeIq88GQHuXNr82t05zc3K2xgm',
+#     'CONSUMER_SECRET': 'cRPebKFq4pfh72y5',
+#     # 'CERTIFICATE_FILE': None,
+#     'HOST_NAME': 'https://d738-154-159-237-115.ngrok-free.app',
 #     'PASS_KEY': 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
 #     'SAFARICOM_API': 'https://sandbox.safaricom.co.ke',
 #     'AUTH_URL': '/oauth/v1/generate?grant_type=client_credentials',
