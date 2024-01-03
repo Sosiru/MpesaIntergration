@@ -8,10 +8,9 @@ from .models import PaymentTransaction, Wallet, ClientCredentials
 # Register your models here.
 @admin.register(PaymentTransaction)
 class PaymentTransactionAdmin(admin.ModelAdmin):
-	list_display = ("phone_number", "amount",
-	                "state", "receipt_number", 'date_created', 'date_modified')
+	list_display = ("phone_number", "amount", "state", "receipt_number", 'date_created', 'date_modified')
 	list_filter = ('phone_number', 'amount', 'date_created', 'date_modified')
-	search_fields = ('name', 'phone_number', 'amount', 'date_created', 'date_modified')
+	search_fields = ('phone_number', 'amount', 'date_created', 'date_modified')
 
 
 @admin.register(Wallet)

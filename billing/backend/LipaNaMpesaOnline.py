@@ -85,7 +85,7 @@ def sendSTK(customer_identifier, phone_number, amount, orderId=0, transaction_id
             else:
                 transaction = PaymentTransactionService().create(
                     phone_number=phone_number, checkout_request_id=checkout_id,
-                    amount=amount, receipt_number="processing" ,order_id=orderId, state=StateService().get(name="Completed"))
+                    amount=amount,order_id=orderId, state=StateService().get(name="Processing"))
                 transaction.save()
                 return transaction.id
     else:

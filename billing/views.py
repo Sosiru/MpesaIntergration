@@ -42,10 +42,9 @@ class SubmitView(APIView):
             entity_id = 0
             if data.get('entity_id'):
                 entity_id = data.get('entity_id')
-            # paybill_account_number = None
-            # if data.get('paybill_account_number'):
-            #     paybill_account_number = data.get('paybill_account_number')
             transaction_id = sendSTK(customer_identifier, phone_number, amount, entity_id)
+            # PaymentTransactionService().get(id=transaction_id).update(state=StateService().get(name="Completed"))
+            print(transaction_id)
             # b2c()
             message = {"status": "ok", "transaction_id": transaction_id}
             TransactionLogBase().complete_transaction(
