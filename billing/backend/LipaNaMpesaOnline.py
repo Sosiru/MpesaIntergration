@@ -69,11 +69,10 @@ def sendSTK(customer_identifier, phone_number, amount, orderId=0, transaction_id
         "AccountReference": account_number or code,
         "TransactionDesc": "{}".format(phone_number)
     }
-
-    print("request is :",request)
+    print("request is :", request)
     response = requests.post(api_url, json=request, headers=headers)
     json_response = json.loads(response.text)
-    print("response is",json_response)
+    print("response is", json_response)
     if json_response.get('ResponseCode'):
         if json_response["ResponseCode"] == "0":
             checkout_id = json_response["CheckoutRequestID"]
@@ -119,9 +118,6 @@ def check_payment_status(checkout_request_id, customer_identifier):
             checkout_request_id=requestId)
         if transaction:
             PaymentTransactionService().update(pk=transaction.id, state=StateService().get(name="Completed"))
-            transaction.save()
-        else:
-            PaymentTransactionService().update(pk=transaction.id,  state=StateService().get(name="Completed"))
             transaction.save()
         result_code = json_response['ResultCode']
         response_message = json_response['ResultDesc']

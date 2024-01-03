@@ -207,7 +207,7 @@ class ConfirmView(APIView):
                     print(transaction)
                     PaymentTransactionService().update(
                         pk=transaction.id,
-                         receipt_number=receipt_number)
+                         receipt_number=receipt_number, state=StateService().get(name="Completed"))
             else:
                 print('unsuccessfull')
                 requestId = body.get('stkCallback').get('CheckoutRequestID')
