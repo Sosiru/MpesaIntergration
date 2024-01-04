@@ -109,12 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 #     'HOST_NAME': 'https://d738-154-159-237-115.ngrok-free.app',
 #     'PASS_KEY': 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919',
 #     'SAFARICOM_API': 'https://sandbox.safaricom.co.ke',
-#     'AUTH_URL': '/oauth/v1/generate?grant_type=client_credentials',
-#     'SHORT_CODE': '174379',
-#     'TILL_NUMBER': None,
-#     'TRANSACTION_TYPE': 'CustomerBuyGoodsOnline',
-# }
-
+#     'A1
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
