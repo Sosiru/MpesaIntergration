@@ -1,0 +1,21 @@
+name: CI
+on: 
+  push: 
+    branches: [master, develop]
+  pull_request:
+    branches: [master, develop]
+
+
+  workflow_dispatch:
+jobs:
+  build-and-release:
+      runs-on: ubuntu-latest
+      steps:
+         - uses: actions/checkout@v3
+         - name: Run a one line script
+           run: echo hello, world
+         - name: Run a multi-line script
+           run: |
+              echo Add other actions to build
+              echo Test and deploy your project
+          
