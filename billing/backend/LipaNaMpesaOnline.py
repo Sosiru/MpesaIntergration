@@ -117,13 +117,16 @@ def check_payment_status(checkout_request_id, customer_identifier):
         transaction = PaymentTransactionService().get(
             checkout_request_id=requestId)
         if transaction:
-            PaymentTransactionService().update(pk=transaction.id, state=StateService().get(name="Completed"))
+            transaction.is_finished = True
+            transaction.is_successful = True
             transaction.save()
         result_code = json_response['ResultCode']
         response_message = json_response['ResultDesc']
         return {
             "code": result_code,
             "response": result_code == "0",
+            "finished": transaction.is_finished,
+            "successful": transaction.is_successful,
             "transaction_status": transaction.state.name,
             "message": response_message
         }
